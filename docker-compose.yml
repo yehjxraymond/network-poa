@@ -23,6 +23,28 @@ services:
     ports:
       - 8545:8545
     userns_mode: host
+  node1:
+    image: parity/parity:beta
+    volumes:
+      - ./config/chain.json:/config/chain.json:ro
+      - ./config/config.toml:/config/config.toml:ro
+      - ./nodes/node1/key.json:/config/keys/POA-Network/key.json:ro
+      - ./nodes/node1/key.pwd:/config/password:ro
+      - ./nodes/node1/chain:/chain
+      - ./nodes/node1/data:/data
+    command:
+      - "--config"
+      - "/config/config.toml"
+      - "--engine-signer"
+      - "c1e25f3d67af411ff886dab8da24fe9159430470"
+      - "--unlock"
+      - "c1e25f3d67af411ff886dab8da24fe9159430470"
+    networks:
+      poa:
+        ipv4_address: 172.16.0.11
+    ports:
+      - 8546:8545
+    userns_mode: host
 
 ###############################################################
 # Network settings
