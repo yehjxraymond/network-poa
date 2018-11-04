@@ -1,0 +1,43 @@
+version: "2.3"
+services:
+  node0:
+    image: parity/parity:beta
+    volumes:
+      - ./config/chain.json:/config/chain.json:ro
+      - ./config/config.toml:/config/config.toml:ro
+      - ./nodes/node0/key.json:/config/keys/POA-Network/key.json:ro
+      - ./nodes/node0/key.pwd:/config/password:ro
+      - ./nodes/node0/chain:/chain
+      - ./nodes/node0/data:/data
+    command:
+      - "--config"
+      - "/config/config.toml"
+      - "--engine-signer"
+      - "41e09899cf335000a2c38c74f66f8043f81957cb"
+      - "--unlock"
+      - "41e09899cf335000a2c38c74f66f8043f81957cb"
+      - "--auto-update none"
+    networks:
+      poa:
+        ipv4_address: 172.16.0.10
+    ports:
+      - 8545:8545
+    userns_mode: host
+
+###############################################################
+# Network settings
+###############################################################
+networks:
+  poa:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.0.0/24
+
+###############################################################
+# Volumes
+###############################################################
+volumes:
+  nodeData: {}
+  nodeChain: {}
